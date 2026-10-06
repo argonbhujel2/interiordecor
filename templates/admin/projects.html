@@ -1,0 +1,25 @@
+{% extends "admin/base_admin.html" %}
+{% block title %}Projects{% endblock %}
+{% block page_title %}Projects <a href="{{ url_for('admin.project_add') }}" class="btn btn-primary btn-sm" style="float:right">Add Project</a>{% endblock %}
+{% block content %}
+<table class="admin-table">
+  <thead><tr><th>Title</th><th>Category</th><th>Location</th><th>Active</th><th>Actions</th></tr></thead>
+  <tbody>
+    {% for p in projects %}
+    <tr>
+      <td>{{ p.title }}</td>
+      <td>{{ p.category }}</td>
+      <td>{{ p.location }}</td>
+      <td>{{ 'Yes' if p.is_active else 'No' }}</td>
+      <td>
+        <a href="{{ url_for('admin.project_edit', id=p.id) }}" class="btn btn-outline btn-sm">Edit</a>
+        <form method="POST" action="{{ url_for('admin.project_delete', id=p.id) }}" style="display:inline" onsubmit="return confirm('Delete?')">
+          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+          <button type="submit" class="btn btn-sm" style="background:#fce8e8;color:var(--error);border:none">Delete</button>
+        </form>
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

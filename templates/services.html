@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block title %}Services - {{ settings.business_name }}{% endblock %}
+{% block content %}
+<div class="page-header"><div class="container"><h1>Our Services</h1><p>Professional installation and design services</p></div></div>
+<section class="section">
+  <div class="container">
+    <div class="card-grid">
+      {% for service in services %}
+      <div class="card">
+        <div class="card-img">
+          {% if service.image_url %}<img src="{{ service.image_url }}" alt="{{ service.title }}" loading="lazy">
+          {% else %}<div class="placeholder">{{ service.title }}</div>{% endif %}
+        </div>
+        <div class="card-body">
+          <h3 class="card-title">{{ service.title }}</h3>
+          <p class="card-text">{{ service.short_description }}</p>
+          {% if service.features %}
+          <ul style="margin:12px 0;font-size:0.9rem;color:var(--gray)">
+            {% for f in service.features.split('\n') if f.strip() %}
+            <li>• {{ f.strip() }}</li>
+            {% endfor %}
+          </ul>
+          {% endif %}
+          <a href="{{ url_for('main.quote') }}" class="btn btn-primary btn-sm">Request Service</a>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{% endblock %}

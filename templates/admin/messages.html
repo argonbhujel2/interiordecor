@@ -1,0 +1,31 @@
+{% extends "admin/base_admin.html" %}
+{% block title %}Messages{% endblock %}
+{% block page_title %}Contact Messages{% endblock %}
+{% block content %}
+<table class="admin-table">
+  <thead><tr><th>Name</th><th>Phone</th><th>Email</th><th>Message</th><th>Date</th><th>Actions</th></tr></thead>
+  <tbody>
+    {% for m in messages %}
+    <tr style="{% if not m.is_read %}font-weight:600{% endif %}">
+      <td>{{ m.name }}</td>
+      <td>{{ m.phone or '-' }}</td>
+      <td>{{ m.email or '-' }}</td>
+      <td>{{ m.message[:80] }}...</td>
+      <td>{{ m.created_at.strftime('%d %b %Y') }}</td>
+      <td>
+        {% if not m.is_read %}
+        <form method="POST" action="{{ url_for('admin.message_read', id=m.id) }}" style="display:inline">
+          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+          <button type="submit" class="btn btn-outline btn-sm">Mark Read</button>
+        </form>
+        {% endif %}
+        <form method="POST" action="{{ url_for('admin.message_delete', id=m.id) }}" style="display:inline" onsubmit="return confirm('Delete?')">
+          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+          <button type="submit" class="btn btn-sm" style="background:#fce8e8;color:var(--error);border:none">Delete</button>
+        </form>
+      </td>
+    </tr>
+    {% else %}<tr><td colspan="6">No messages</td></tr>{% endfor %}
+  </tbody>
+</table>
+{% endblock %}

@@ -1,0 +1,147 @@
+{% extends "base.html" %}
+{% block title %}{{ settings.business_name }} - Premium Gypsum & Ceiling Solutions in Nepal{% endblock %}
+{% block content %}
+<section class="hero"{% if settings.hero_image %} style="background-image: linear-gradient(135deg, rgba(26,26,26,0.75) 0%, rgba(44,44,44,0.6) 100%), url('{{ settings.hero_image }}'); background-size: cover; background-position: center;"{% endif %}>
+  <div class="container">
+    <div class="hero-content">
+      <h1>{{ settings.hero_title }}</h1>
+      <p>{{ settings.hero_subtitle }}</p>
+      <div class="hero-btns">
+        <a href="{{ url_for('main.quote') }}" class="btn btn-primary">Get a Free Quote</a>
+        <a href="{{ url_for('main.products') }}" class="btn btn-outline-light">View Products</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section bg-white">
+  <div class="container text-center">
+    <h2 class="section-title">Our Products</h2>
+    <p class="section-subtitle" style="margin-left:auto;margin-right:auto">Premium gypsum boards, ceiling systems and accessories for residential and commercial projects.</p>
+    <div class="card-grid">
+      {% for product in products %}
+      <div class="card">
+        <div class="card-img">
+          {% if product.images.first() %}
+          <img src="{{ product.images.first().image_url }}" alt="{{ product.name }}" loading="lazy">
+          {% else %}
+          <div class="placeholder">{{ product.name }}</div>
+          {% endif %}
+        </div>
+        <div class="card-body">
+          <div class="card-category">{{ product.category.name if product.category else 'Product' }}</div>
+          <h3 class="card-title">{{ product.name }}</h3>
+          <p class="card-text">{{ product.short_description[:100] }}{% if product.short_description|length > 100 %}...{% endif %}</p>
+          <div class="card-meta">
+            <span class="card-price">{{ product.price_display }}</span>
+            <span class="card-stock {% if product.stock_status != 'Available' %}out{% endif %}">{{ product.stock_status }}</span>
+          </div>
+          <div class="card-actions">
+            <a href="{{ url_for('main.product_detail', slug=product.slug) }}" class="btn btn-outline btn-sm">View Details</a>
+            <a href="{{ url_for('main.quote') }}" class="btn btn-primary btn-sm">Request Quote</a>
+          </div>
+        </div>
+      </div>
+      {% else %}
+      <p>Products coming soon.</p>
+      {% endfor %}
+    </div>
+    <div style="margin-top:40px">
+      <a href="{{ url_for('main.products') }}" class="btn btn-outline">View All Products</a>
+    </div>
+  </div>
+</section>
+
+<section class="section bg-concrete">
+  <div class="container text-center">
+    <h2 class="section-title">Our Services</h2>
+    <p class="section-subtitle" style="margin-left:auto;margin-right:auto">From supply to professional installation — complete ceiling solutions.</p>
+    <div class="card-grid">
+      {% for service in services %}
+      <div class="card">
+        <div class="card-img">
+          {% if service.image_url %}
+          <img src="{{ service.image_url }}" alt="{{ service.title }}" loading="lazy">
+          {% else %}
+          <div class="placeholder">{{ service.title }}</div>
+          {% endif %}
+        </div>
+        <div class="card-body">
+          <h3 class="card-title">{{ service.title }}</h3>
+          <p class="card-text">{{ service.short_description }}</p>
+          <a href="{{ url_for('main.quote') }}" class="btn btn-primary btn-sm">Request Service</a>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<section class="section bg-white">
+  <div class="container text-center">
+    <h2 class="section-title">Featured Projects</h2>
+    <p class="section-subtitle" style="margin-left:auto;margin-right:auto">Explore our completed gypsum and ceiling projects across Nepal.</p>
+    <div class="card-grid">
+      {% for project in projects %}
+      <div class="card">
+        <div class="card-img">
+          {% if project.cover_image %}
+          <img src="{{ project.cover_image }}" alt="{{ project.title }}" loading="lazy">
+          {% else %}
+          <div class="placeholder">{{ project.category }}</div>
+          {% endif %}
+        </div>
+        <div class="card-body">
+          <div class="card-category">{{ project.category }}</div>
+          <h3 class="card-title">{{ project.title }}</h3>
+          <p class="card-text">{{ project.location }}</p>
+          <a href="{{ url_for('main.project_detail', slug=project.slug) }}" class="btn btn-outline btn-sm">View Project</a>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+    <div style="margin-top:40px">
+      <a href="{{ url_for('main.projects') }}" class="btn btn-outline">View All Projects</a>
+    </div>
+  </div>
+</section>
+
+<section class="section bg-dark">
+  <div class="container">
+    <div class="stats-grid">
+      <div class="stat-item">
+        <h3>{{ settings.stat_projects }}</h3>
+        <p>Projects Completed</p>
+      </div>
+      <div class="stat-item">
+        <h3>{{ settings.stat_customers }}</h3>
+        <p>Happy Customers</p>
+      </div>
+      <div class="stat-item">
+        <h3>{{ settings.stat_years }}</h3>
+        <p>Years Experience</p>
+      </div>
+      <div class="stat-item">
+        <h3>{{ settings.stat_support }}</h3>
+        <p>Customer Support</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section bg-concrete">
+  <div class="container text-center">
+    <h2 class="section-title">Ceiling Cost Calculator</h2>
+    <p class="section-subtitle" style="margin-left:auto;margin-right:auto">Get a quick estimate for your project.</p>
+    <a href="{{ url_for('main.calculator') }}" class="btn btn-primary">Open Calculator</a>
+  </div>
+</section>
+
+<section class="section bg-white">
+  <div class="container text-center">
+    <h2 class="section-title">Ready to Transform Your Space?</h2>
+    <p class="section-subtitle" style="margin-left:auto;margin-right:auto">Get a free quotation today. Our team will contact you shortly.</p>
+    <a href="{{ url_for('main.quote') }}" class="btn btn-primary">Get a Free Quote</a>
+  </div>
+</section>
+{% endblock %}

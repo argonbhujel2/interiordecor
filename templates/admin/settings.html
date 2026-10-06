@@ -1,0 +1,50 @@
+{% extends "admin/base_admin.html" %}
+{% block title %}Settings{% endblock %}
+{% block page_title %}Website Settings{% endblock %}
+{% block content %}
+<form method="POST" enctype="multipart/form-data" style="background:white;padding:32px;border-radius:var(--radius);box-shadow:var(--shadow);max-width:700px">
+  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+  <h3 style="margin-bottom:16px">Business Info</h3>
+  <div class="form-group"><label>Business Name</label><input type="text" name="business_name" class="form-control" value="{{ settings.get('business_name','') }}"></div>
+  <div class="form-group"><label>Tagline</label><input type="text" name="tagline" class="form-control" value="{{ settings.get('tagline','') }}"></div>
+  <div class="form-group"><label>Phone</label><input type="text" name="phone" class="form-control" value="{{ settings.get('phone','') }}"></div>
+  <div class="form-group"><label>WhatsApp (with country code, no +)</label><input type="text" name="whatsapp" class="form-control" value="{{ settings.get('whatsapp','') }}"></div>
+  <div class="form-group"><label>Email</label><input type="email" name="email" class="form-control" value="{{ settings.get('email','') }}"></div>
+  <div class="form-group"><label>Address</label><input type="text" name="address" class="form-control" value="{{ settings.get('address','') }}"></div>
+  <div class="form-group"><label>Opening Hours</label><input type="text" name="opening_hours" class="form-control" value="{{ settings.get('opening_hours','') }}"></div>
+  <h3 style="margin:24px 0 16px">Social Links</h3>
+  <div class="form-group"><label>Facebook</label><input type="url" name="facebook" class="form-control" value="{{ settings.get('facebook','') }}"></div>
+  <div class="form-group"><label>Instagram</label><input type="url" name="instagram" class="form-control" value="{{ settings.get('instagram','') }}"></div>
+  <div class="form-group"><label>TikTok</label><input type="url" name="tiktok" class="form-control" value="{{ settings.get('tiktok','') }}"></div>
+  <div class="form-group"><label>YouTube</label><input type="url" name="youtube" class="form-control" value="{{ settings.get('youtube','') }}"></div>
+  <h3 style="margin:24px 0 16px">Hero Section</h3>
+  <div class="form-group"><label>Hero Title</label><input type="text" name="hero_title" class="form-control" value="{{ settings.get('hero_title','') }}"></div>
+  <div class="form-group"><label>Hero Subtitle</label><textarea name="hero_subtitle" class="form-control">{{ settings.get('hero_subtitle','') }}</textarea></div>
+  <div class="form-group">
+    <label>Hero Background Image</label>
+    {% if settings.get('hero_image') %}
+    <div style="margin-bottom:12px">
+      <img src="{{ settings.get('hero_image') }}" alt="Hero" style="max-width:100%;max-height:180px;border-radius:8px;object-fit:cover">
+      <div class="form-check" style="margin-top:8px">
+        <input type="checkbox" name="clear_hero_image" id="clear_hero"> <label for="clear_hero">Remove current image</label>
+      </div>
+    </div>
+    {% endif %}
+    <input type="file" name="hero_image" class="form-control" accept="image/*">
+    <small style="color:var(--gray)">Upload a high-quality ceiling/interior photo. Recommended: 1920×1080 or larger.</small>
+  </div>
+  <h3 style="margin:24px 0 16px">Statistics</h3>
+  <div class="form-row">
+    <div class="form-group"><label>Projects</label><input type="text" name="stat_projects" class="form-control" value="{{ settings.get('stat_projects','') }}"></div>
+    <div class="form-group"><label>Customers</label><input type="text" name="stat_customers" class="form-control" value="{{ settings.get('stat_customers','') }}"></div>
+  </div>
+  <div class="form-row">
+    <div class="form-group"><label>Years</label><input type="text" name="stat_years" class="form-control" value="{{ settings.get('stat_years','') }}"></div>
+    <div class="form-group"><label>Support</label><input type="text" name="stat_support" class="form-control" value="{{ settings.get('stat_support','') }}"></div>
+  </div>
+  <h3 style="margin:24px 0 16px">About Content</h3>
+  <div class="form-group"><label>Who We Are</label><textarea name="about_who" class="form-control">{{ settings.get('about_who','') }}</textarea></div>
+  <div class="form-group"><label>Our Mission</label><textarea name="about_mission" class="form-control">{{ settings.get('about_mission','') }}</textarea></div>
+  <button type="submit" class="btn btn-primary" style="margin-top:20px">Save Settings</button>
+</form>
+{% endblock %}

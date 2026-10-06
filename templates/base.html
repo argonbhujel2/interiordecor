@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}{{ settings.business_name }} - {{ settings.tagline }}{% endblock %}</title>
+  <meta name="description" content="{% block meta_description %}Premium gypsum board, false ceiling, and interior ceiling solutions in Nepal. Quality materials and professional installation.{% endblock %}">
+  <meta property="og:title" content="{% block og_title %}{{ settings.business_name }}{% endblock %}">
+  <meta property="og:description" content="{% block og_description %}{{ self.meta_description() }}{% endblock %}">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="en_NP">
+  <link rel="canonical" href="{% block canonical %}{{ request.url }}{% endblock %}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  {% block head %}{% endblock %}
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "LocalBusiness",
+    "name": "{{ settings.business_name }}",
+    "description": "{{ settings.tagline }}",
+    "telephone": "{{ settings.phone }}",
+    "email": "{{ settings.email }}",
+    "address": {
+      "@type": "PostalAddress",
+      "addressLocality": "Urlabari",
+      "addressRegion": "Morang",
+      "addressCountry": "NP"
+    },
+    "url": "{{ request.url_root }}",
+    "priceRange": "$$"
+  }
+  </script>
+</head>
+<body>
+  <nav class="navbar" id="navbar">
+    <div class="container">
+      <a href="{{ url_for('main.home') }}" class="logo">{{ settings.business_name }}</a>
+      <div class="nav-links" id="navLinks">
+        <a href="{{ url_for('main.home') }}" class="{% if request.endpoint == 'main.home' %}active{% endif %}">Home</a>
+        <a href="{{ url_for('main.products') }}" class="{% if 'product' in (request.endpoint or '') %}active{% endif %}">Products</a>
+        <a href="{{ url_for('main.services') }}" class="{% if 'service' in (request.endpoint or '') %}active{% endif %}">Services</a>
+        <a href="{{ url_for('main.projects') }}" class="{% if 'project' in (request.endpoint or '') %}active{% endif %}">Projects</a>
+        <a href="{{ url_for('main.about') }}" class="{% if request.endpoint == 'main.about' %}active{% endif %}">About</a>
+        <a href="{{ url_for('main.contact') }}" class="{% if request.endpoint == 'main.contact' %}active{% endif %}">Contact</a>
+        <a href="{{ url_for('main.quote') }}" class="btn btn-primary btn-sm nav-cta">Get Quote</a>
+      </div>
+      <div class="mobile-actions">
+        <a href="tel:{{ settings.phone }}" title="Call">📞</a>
+        <a href="https://wa.me/{{ settings.whatsapp }}?text=Hello%2C%20I%20am%20interested%20in%20your%20gypsum%2Ffalse%20ceiling%20products%20and%20services.%20I%20would%20like%20to%20get%20a%20quotation." target="_blank" title="WhatsApp">💬</a>
+      </div>
+      <button class="hamburger" id="hamburger" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  {% with messages = get_flashed_messages(with_categories=true) %}
+  {% if messages %}
+  <div class="flash-messages">
+    {% for category, message in messages %}
+    <div class="flash flash-{{ category }}">{{ message }}</div>
+    {% endfor %}
+  </div>
+  {% endif %}
+  {% endwith %}
+
+  <main>
+    {% block content %}{% endblock %}
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div>
+          <h4>{{ settings.business_name }}</h4>
+          <p style="margin-bottom:16px;opacity:0.8">{{ settings.tagline }}</p>
+          <p style="opacity:0.7;font-size:0.9rem">Premium gypsum materials, false ceiling systems and professional installation across Nepal.</p>
+        </div>
+        <div>
+          <h4>Company</h4>
+          <ul>
+            <li><a href="{{ url_for('main.about') }}">About Us</a></li>
+            <li><a href="{{ url_for('main.products') }}">Products</a></li>
+            <li><a href="{{ url_for('main.services') }}">Services</a></li>
+            <li><a href="{{ url_for('main.projects') }}">Projects</a></li>
+            <li><a href="{{ url_for('main.contact') }}">Contact</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Services</h4>
+          <ul>
+            <li><a href="{{ url_for('main.services') }}">Gypsum Ceiling</a></li>
+            <li><a href="{{ url_for('main.services') }}">False Ceiling</a></li>
+            <li><a href="{{ url_for('main.services') }}">Gypsum Partition</a></li>
+            <li><a href="{{ url_for('main.services') }}">Installation</a></li>
+            <li><a href="{{ url_for('main.services') }}">Repair</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Contact</h4>
+          <ul>
+            <li>📞 {{ settings.phone }}</li>
+            <li>💬 WhatsApp: {{ settings.whatsapp }}</li>
+            <li>✉️ {{ settings.email }}</li>
+            <li>📍 {{ settings.address }}</li>
+          </ul>
+          <div style="margin-top:16px;display:flex;gap:12px">
+            <a href="{{ settings.facebook }}" target="_blank" aria-label="Facebook">FB</a>
+            <a href="{{ settings.instagram }}" target="_blank" aria-label="Instagram">IG</a>
+            <a href="{{ settings.tiktok }}" target="_blank" aria-label="TikTok">TT</a>
+            <a href="{{ settings.youtube }}" target="_blank" aria-label="YouTube">YT</a>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>© 2026 {{ settings.business_name }}. All Rights Reserved.</p>
+        <p>Designed & Developed by <a href="https://bamstudio.argan.com.np/" target="_blank" rel="noopener">BAM Studio</a></p>
+      </div>
+    </div>
+  </footer>
+
+  <a href="https://wa.me/{{ settings.whatsapp }}?text=Hello%2C%20I%20am%20interested%20in%20your%20gypsum%2Ffalse%20ceiling%20products%20and%20services.%20I%20would%20like%20to%20get%20a%20quotation." class="whatsapp-float" target="_blank" rel="noopener" aria-label="WhatsApp">
+    <svg width="28" height="28" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.435 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+  </a>
+
+  <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+  {% block scripts %}{% endblock %}
+</body>
+</html>

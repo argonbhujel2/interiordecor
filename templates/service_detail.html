@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% block title %}{{ service.title }} - {{ settings.business_name }}{% endblock %}
+{% block content %}
+<div class="page-header"><div class="container"><h1>{{ service.title }}</h1></div></div>
+<section class="section"><div class="container">
+  <p>{{ service.description }}</p>
+  {% if service.features %}<h3 style="margin-top:24px">Features</h3><ul>{% for f in service.features.split('\n') if f.strip() %}<li>• {{ f.strip() }}</li>{% endfor %}</ul>{% endif %}
+  <a href="{{ url_for('main.quote') }}" class="btn btn-primary" style="margin-top:24px">Request Service</a>
+</div></section>
+{% endblock %}

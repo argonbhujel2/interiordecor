@@ -1,0 +1,23 @@
+{% extends "admin/base_admin.html" %}
+{% block title %}Services{% endblock %}
+{% block page_title %}Services <a href="{{ url_for('admin.service_add') }}" class="btn btn-primary btn-sm" style="float:right">Add Service</a>{% endblock %}
+{% block content %}
+<table class="admin-table">
+  <thead><tr><th>Title</th><th>Active</th><th>Actions</th></tr></thead>
+  <tbody>
+    {% for s in services %}
+    <tr>
+      <td>{{ s.title }}</td>
+      <td>{{ 'Yes' if s.is_active else 'No' }}</td>
+      <td>
+        <a href="{{ url_for('admin.service_edit', id=s.id) }}" class="btn btn-outline btn-sm">Edit</a>
+        <form method="POST" action="{{ url_for('admin.service_delete', id=s.id) }}" style="display:inline" onsubmit="return confirm('Delete?')">
+          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+          <button type="submit" class="btn btn-sm" style="background:#fce8e8;color:var(--error);border:none">Delete</button>
+        </form>
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

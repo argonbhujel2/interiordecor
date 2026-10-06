@@ -1,0 +1,46 @@
+{% extends "admin/base_admin.html" %}
+{% block title %}Dashboard{% endblock %}
+{% block page_title %}Dashboard{% endblock %}
+{% block content %}
+<div class="admin-stats">
+  <div class="admin-stat-card"><h3>{{ stats.products }}</h3><p>Products</p></div>
+  <div class="admin-stat-card"><h3>{{ stats.services }}</h3><p>Services</p></div>
+  <div class="admin-stat-card"><h3>{{ stats.projects }}</h3><p>Projects</p></div>
+  <div class="admin-stat-card"><h3>{{ stats.quotes_new }}</h3><p>New Quotes</p></div>
+  <div class="admin-stat-card"><h3>{{ stats.quotes_total }}</h3><p>Total Quotes</p></div>
+  <div class="admin-stat-card"><h3>{{ stats.messages_unread }}</h3><p>Unread Messages</p></div>
+</div>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:24px">
+  <div>
+    <h3 style="margin-bottom:16px">Recent Quote Requests</h3>
+    <table class="admin-table">
+      <thead><tr><th>Name</th><th>Phone</th><th>Status</th><th>Date</th></tr></thead>
+      <tbody>
+        {% for q in recent_quotes %}
+        <tr>
+          <td><a href="{{ url_for('admin.quote_detail', id=q.id) }}">{{ q.customer_name }}</a></td>
+          <td>{{ q.phone }}</td>
+          <td><span class="badge badge-new">{{ q.status }}</span></td>
+          <td>{{ q.created_at.strftime('%d %b %Y') }}</td>
+        </tr>
+        {% else %}<tr><td colspan="4">No quotes yet</td></tr>{% endfor %}
+      </tbody>
+    </table>
+  </div>
+  <div>
+    <h3 style="margin-bottom:16px">Recent Messages</h3>
+    <table class="admin-table">
+      <thead><tr><th>Name</th><th>Message</th><th>Date</th></tr></thead>
+      <tbody>
+        {% for m in recent_messages %}
+        <tr>
+          <td>{{ m.name }}{% if not m.is_read %} <strong>•</strong>{% endif %}</td>
+          <td>{{ m.message[:50] }}...</td>
+          <td>{{ m.created_at.strftime('%d %b') }}</td>
+        </tr>
+        {% else %}<tr><td colspan="3">No messages</td></tr>{% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

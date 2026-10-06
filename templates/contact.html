@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block title %}Contact Us - {{ settings.business_name }}{% endblock %}
+{% block content %}
+<div class="page-header"><div class="container"><h1>Contact Us</h1><p>Get in touch for quotations and consultations</p></div></div>
+<section class="section">
+  <div class="container">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:48px" class="contact-grid">
+      <div>
+        <h2 class="section-title">Get In Touch</h2>
+        <p style="margin-bottom:24px"><strong>{{ settings.business_name }}</strong></p>
+        <p>📞 <a href="tel:{{ settings.phone }}">{{ settings.phone }}</a></p>
+        <p>💬 WhatsApp: {{ settings.whatsapp }}</p>
+        <p>✉️ <a href="mailto:{{ settings.email }}">{{ settings.email }}</a></p>
+        <p>📍 {{ settings.address }}</p>
+        <p style="margin-top:16px">🕐 {{ settings.opening_hours }}</p>
+        <div style="margin-top:24px;display:flex;gap:12px;flex-wrap:wrap">
+          <a href="tel:{{ settings.phone }}" class="btn btn-primary btn-sm">Call Now</a>
+          <a href="https://wa.me/{{ settings.whatsapp }}?text=Hello%2C%20I%20am%20interested%20in%20your%20gypsum%2Ffalse%20ceiling%20products%20and%20services." class="btn btn-outline btn-sm" target="_blank">WhatsApp Us</a>
+        </div>
+      </div>
+      <div>
+        <h2 class="section-title">Send a Message</h2>
+        <form method="POST" action="{{ url_for('main.contact') }}">
+          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+          <div class="form-group"><label>Name *</label><input type="text" name="name" class="form-control" required></div>
+          <div class="form-group"><label>Phone</label><input type="tel" name="phone" class="form-control"></div>
+          <div class="form-group"><label>Email</label><input type="email" name="email" class="form-control"></div>
+          <div class="form-group"><label>Message *</label><textarea name="message" class="form-control" required></textarea></div>
+          <button type="submit" class="btn btn-primary">Send Message</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+<style>@media(max-width:768px){.contact-grid{grid-template-columns:1fr!important}}</style>
+{% endblock %}

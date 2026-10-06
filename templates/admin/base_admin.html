@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}Admin{% endblock %} - Urlabari Interior Decor</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+  <div class="admin-layout">
+    <aside class="admin-sidebar">
+      <div class="logo" style="font-size:1rem;padding:0 16px 24px;color:white;font-weight:700">Urlabari Interior</div>
+      <a href="{{ url_for('admin.dashboard') }}" class="{% if request.endpoint == 'admin.dashboard' %}active{% endif %}">Dashboard</a>
+      <a href="{{ url_for('admin.products') }}" class="{% if 'product' in (request.endpoint or '') %}active{% endif %}">Products</a>
+      <a href="{{ url_for('admin.services') }}" class="{% if 'service' in (request.endpoint or '') %}active{% endif %}">Services</a>
+      <a href="{{ url_for('admin.projects') }}" class="{% if 'project' in (request.endpoint or '') %}active{% endif %}">Projects</a>
+      <a href="{{ url_for('admin.quotes') }}" class="{% if 'quote' in (request.endpoint or '') %}active{% endif %}">Quote Requests</a>
+      <a href="{{ url_for('admin.messages') }}" class="{% if 'message' in (request.endpoint or '') %}active{% endif %}">Messages</a>
+      <a href="{{ url_for('admin.pricing') }}" class="{% if request.endpoint == 'admin.pricing' %}active{% endif %}">Pricing</a>
+      <a href="{{ url_for('admin.settings') }}" class="{% if request.endpoint == 'admin.settings' %}active{% endif %}">Settings</a>
+      <a href="{{ url_for('main.home') }}" target="_blank">View Site</a>
+      <a href="{{ url_for('admin.logout') }}">Logout</a>
+    </aside>
+    <div class="admin-main">
+      <div class="admin-header">
+        <h2>{% block page_title %}Dashboard{% endblock %}</h2>
+        <span>{{ current_user.username }}</span>
+      </div>
+      <div class="admin-content">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+        {% for cat, msg in messages %}<div class="flash flash-{{ cat }}">{{ msg }}</div>{% endfor %}
+        {% endwith %}
+        {% block content %}{% endblock %}
+      </div>
+    </div>
+  </div>
+</body>
+</html>

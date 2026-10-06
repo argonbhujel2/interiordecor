@@ -1,0 +1,26 @@
+{% extends "admin/base_admin.html" %}
+{% block title %}{{ 'Edit' if project else 'Add' }} Project{% endblock %}
+{% block page_title %}{{ 'Edit' if project else 'Add' }} Project{% endblock %}
+{% block content %}
+<form method="POST" enctype="multipart/form-data" style="max-width:700px;background:white;padding:32px;border-radius:var(--radius);box-shadow:var(--shadow)">
+  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+  <div class="form-group"><label>Title *</label><input type="text" name="title" class="form-control" value="{{ project.title if project else '' }}" required></div>
+  <div class="form-group"><label>Slug</label><input type="text" name="slug" class="form-control" value="{{ project.slug if project else '' }}"></div>
+  <div class="form-group"><label>Category</label>
+    <select name="category" class="form-control">
+      {% for c in ['Residential','Office','Hotel','Restaurant','School','Shop','Commercial','Ceiling Design'] %}
+      <option value="{{ c }}" {% if project and project.category == c %}selected{% endif %}>{{ c }}</option>
+      {% endfor %}
+    </select>
+  </div>
+  <div class="form-group"><label>Location</label><input type="text" name="location" class="form-control" value="{{ project.location if project else '' }}"></div>
+  <div class="form-group"><label>Description</label><textarea name="description" class="form-control">{{ project.description if project else '' }}</textarea></div>
+  <div class="form-group"><label>Materials Used</label><textarea name="materials_used" class="form-control">{{ project.materials_used if project else '' }}</textarea></div>
+  <div class="form-group"><label>Completion Date</label><input type="date" name="completion_date" class="form-control" value="{{ project.completion_date.isoformat() if project and project.completion_date else '' }}"></div>
+  <div class="form-group"><label>Cover Image</label><input type="file" name="cover_image" class="form-control" accept="image/*"></div>
+  <div class="form-check"><input type="checkbox" name="is_featured" id="feat" {% if project and project.is_featured %}checked{% endif %}><label for="feat">Featured</label></div>
+  <div class="form-check" style="margin-top:8px"><input type="checkbox" name="is_active" id="act" {% if not project or project.is_active %}checked{% endif %}><label for="act">Active</label></div>
+  <button type="submit" class="btn btn-primary" style="margin-top:20px">Save</button>
+  <a href="{{ url_for('admin.projects') }}" class="btn btn-outline">Cancel</a>
+</form>
+{% endblock %}

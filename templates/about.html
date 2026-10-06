@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block title %}About Us - {{ settings.business_name }}{% endblock %}
+{% block content %}
+<div class="page-header"><div class="container"><h1>About {{ settings.business_name }}</h1></div></div>
+<section class="section bg-white">
+  <div class="container" style="max-width:800px">
+    <h2 class="section-title">Who We Are</h2>
+    <p style="margin-bottom:32px;font-size:1.1rem">{{ settings.about_who }}</p>
+    <h2 class="section-title">Our Mission</h2>
+    <p style="margin-bottom:32px;font-size:1.1rem">{{ settings.about_mission }}</p>
+    <h2 class="section-title">Why Choose Us</h2>
+    <div class="card-grid" style="margin-top:24px">
+      {% for item in ['Quality Materials','Professional Installation','Competitive Pricing','Custom Designs','On-Site Measurement','Reliable Support','Timely Completion'] %}
+      <div class="card" style="padding:24px;text-align:center">
+        <h3 style="color:var(--gold);margin-bottom:8px">✓</h3>
+        <p style="font-weight:600">{{ item }}</p>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+<section class="section bg-dark">
+  <div class="container">
+    <div class="stats-grid">
+      <div class="stat-item"><h3>{{ settings.stat_projects }}</h3><p>Projects</p></div>
+      <div class="stat-item"><h3>{{ settings.stat_customers }}</h3><p>Customers</p></div>
+      <div class="stat-item"><h3>{{ settings.stat_years }}</h3><p>Years Experience</p></div>
+      <div class="stat-item"><h3>{{ settings.stat_support }}</h3><p>Support</p></div>
+    </div>
+  </div>
+</section>
+{% endblock %}

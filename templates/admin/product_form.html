@@ -1,0 +1,36 @@
+{% extends "admin/base_admin.html" %}
+{% block title %}{{ 'Edit' if product else 'Add' }} Product{% endblock %}
+{% block page_title %}{{ 'Edit' if product else 'Add' }} Product{% endblock %}
+{% block content %}
+<form method="POST" enctype="multipart/form-data" style="max-width:700px;background:white;padding:32px;border-radius:var(--radius);box-shadow:var(--shadow)">
+  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+  <div class="form-group"><label>Name *</label><input type="text" name="name" class="form-control" value="{{ product.name if product else '' }}" required></div>
+  <div class="form-group"><label>Slug</label><input type="text" name="slug" class="form-control" value="{{ product.slug if product else '' }}" placeholder="auto-generated if empty"></div>
+  <div class="form-group"><label>Category</label>
+    <select name="category_id" class="form-control">
+      <option value="">Select</option>
+      {% for c in categories %}<option value="{{ c.id }}" {% if product and product.category_id == c.id %}selected{% endif %}>{{ c.name }}</option>{% endfor %}
+    </select>
+  </div>
+  <div class="form-group"><label>Short Description</label><textarea name="short_description" class="form-control">{{ product.short_description if product else '' }}</textarea></div>
+  <div class="form-group"><label>Description</label><textarea name="description" class="form-control">{{ product.description if product else '' }}</textarea></div>
+  <div class="form-group"><label>Specifications</label><textarea name="specifications" class="form-control">{{ product.specifications if product else '' }}</textarea></div>
+  <div class="form-group"><label>Applications</label><textarea name="applications" class="form-control">{{ product.applications if product else '' }}</textarea></div>
+  <div class="form-group"><label>Available Sizes</label><input type="text" name="available_sizes" class="form-control" value="{{ product.available_sizes if product else '' }}"></div>
+  <div class="form-row">
+    <div class="form-group"><label>Price (number)</label><input type="number" step="0.01" name="price" class="form-control" value="{{ product.price if product and product.price else '' }}"></div>
+    <div class="form-group"><label>Price Display</label><input type="text" name="price_display" class="form-control" value="{{ product.price_display if product else 'Request Price' }}"></div>
+  </div>
+  <div class="form-group"><label>Stock Status</label>
+    <select name="stock_status" class="form-control">
+      <option value="Available" {% if product and product.stock_status == 'Available' %}selected{% endif %}>Available</option>
+      <option value="Out of Stock" {% if product and product.stock_status == 'Out of Stock' %}selected{% endif %}>Out of Stock</option>
+    </select>
+  </div>
+  <div class="form-group"><label>Image</label><input type="file" name="image" class="form-control" accept="image/*"></div>
+  <div class="form-check"><input type="checkbox" name="is_featured" id="feat" {% if product and product.is_featured %}checked{% endif %}><label for="feat">Featured</label></div>
+  <div class="form-check" style="margin-top:8px"><input type="checkbox" name="is_active" id="act" {% if not product or product.is_active %}checked{% endif %}><label for="act">Active</label></div>
+  <button type="submit" class="btn btn-primary" style="margin-top:20px">Save Product</button>
+  <a href="{{ url_for('admin.products') }}" class="btn btn-outline" style="margin-top:20px">Cancel</a>
+</form>
+{% endblock %}

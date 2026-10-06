@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block title %}{{ project.title }} - {{ settings.business_name }}{% endblock %}
+{% block content %}
+<div class="page-header"><div class="container"><h1>{{ project.title }}</h1><p>{{ project.location }} · {{ project.category }}</p></div></div>
+<section class="section"><div class="container">
+  {% if project.cover_image %}<img src="{{ project.cover_image }}" alt="{{ project.title }}" style="width:100%;max-height:500px;object-fit:cover;border-radius:var(--radius-lg);margin-bottom:32px">{% endif %}
+  <p>{{ project.description }}</p>
+  {% if project.materials_used %}<h3 style="margin-top:24px">Materials Used</h3><p>{{ project.materials_used }}</p>{% endif %}
+  {% if project.completion_date %}<p style="margin-top:16px"><strong>Completed:</strong> {{ project.completion_date.strftime('%B %Y') }}</p>{% endif %}
+  <a href="{{ url_for('main.quote') }}" class="btn btn-primary" style="margin-top:24px">Get a Similar Quote</a>
+</div></section>
+{% endblock %}

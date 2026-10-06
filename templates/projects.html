@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block title %}Projects - {{ settings.business_name }}{% endblock %}
+{% block content %}
+<div class="page-header"><div class="container"><h1>Our Projects</h1><p>Completed gypsum and ceiling installations across Nepal</p></div></div>
+<section class="section">
+  <div class="container">
+    <div class="filter-bar">
+      <a href="{{ url_for('main.projects') }}" class="filter-btn {% if not active_category %}active{% endif %}">All</a>
+      {% for cat in categories %}
+      <a href="{{ url_for('main.projects', category=cat) }}" class="filter-btn {% if active_category == cat %}active{% endif %}">{{ cat }}</a>
+      {% endfor %}
+    </div>
+    <div class="card-grid">
+      {% for project in projects %}
+      <div class="card">
+        <div class="card-img">
+          {% if project.cover_image %}<img src="{{ project.cover_image }}" alt="{{ project.title }}" loading="lazy">
+          {% else %}<div class="placeholder">{{ project.category }}</div>{% endif %}
+        </div>
+        <div class="card-body">
+          <div class="card-category">{{ project.category }}</div>
+          <h3 class="card-title">{{ project.title }}</h3>
+          <p class="card-text">📍 {{ project.location }}</p>
+          <a href="{{ url_for('main.project_detail', slug=project.slug) }}" class="btn btn-outline btn-sm">View Project</a>
+        </div>
+      </div>
+      {% else %}<p>No projects yet.</p>{% endfor %}
+    </div>
+  </div>
+</section>
+{% endblock %}

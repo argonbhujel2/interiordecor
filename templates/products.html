@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block title %}Products - {{ settings.business_name }}{% endblock %}
+{% block content %}
+<div class="page-header"><div class="container"><h1>Our Products</h1><p>Premium gypsum materials and ceiling solutions</p></div></div>
+<section class="section">
+  <div class="container">
+    <div class="filter-bar">
+      <a href="{{ url_for('main.products') }}" class="filter-btn {% if not active_category %}active{% endif %}">All</a>
+      {% for cat in categories %}
+      <a href="{{ url_for('main.products', category=cat.slug) }}" class="filter-btn {% if active_category == cat.slug %}active{% endif %}">{{ cat.name }}</a>
+      {% endfor %}
+    </div>
+    <div class="card-grid">
+      {% for product in products %}
+      <div class="card">
+        <div class="card-img">
+          {% if product.images.first() %}<img src="{{ product.images.first().image_url }}" alt="{{ product.name }}" loading="lazy">
+          {% else %}<div class="placeholder">{{ product.name }}</div>{% endif %}
+        </div>
+        <div class="card-body">
+          <div class="card-category">{{ product.category.name if product.category else '' }}</div>
+          <h3 class="card-title">{{ product.name }}</h3>
+          <p class="card-text">{{ product.short_description[:120] if product.short_description else '' }}</p>
+          <div class="card-meta">
+            <span class="card-price">{{ product.price_display }}</span>
+            <span class="card-stock {% if product.stock_status != 'Available' %}out{% endif %}">{{ product.stock_status }}</span>
+          </div>
+          <div class="card-actions">
+            <a href="{{ url_for('main.product_detail', slug=product.slug) }}" class="btn btn-outline btn-sm">View Details</a>
+            <a href="{{ url_for('main.quote') }}" class="btn btn-primary btn-sm">Request Quote</a>
+          </div>
+        </div>
+      </div>
+      {% else %}<p>No products found.</p>{% endfor %}
+    </div>
+  </div>
+</section>
+{% endblock %}

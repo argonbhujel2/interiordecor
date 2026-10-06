@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+{% block title %}{{ product.name }} - {{ settings.business_name }}{% endblock %}
+{% block content %}
+<div class="page-header"><div class="container"><h1>{{ product.name }}</h1></div></div>
+<section class="section">
+  <div class="container">
+    <div class="product-detail-grid">
+      <div class="product-gallery">
+        {% if product.images.first() %}
+        <img src="{{ product.images.first().image_url }}" alt="{{ product.name }}" style="width:100%;height:100%;object-fit:cover">
+        {% else %}
+        <div class="placeholder" style="min-height:400px;display:flex;align-items:center;justify-content:center">{{ product.name }}</div>
+        {% endif %}
+      </div>
+      <div class="product-info">
+        <div class="card-category">{{ product.category.name if product.category else '' }}</div>
+        <h1>{{ product.name }}</h1>
+        <p style="font-size:1.3rem;color:var(--gold);font-weight:700;margin:12px 0">{{ product.price_display }}</p>
+        <span class="card-stock {% if product.stock_status != 'Available' %}out{% endif %}">{{ product.stock_status }}</span>
+        <p style="margin:20px 0">{{ product.description }}</p>
+        {% if product.specifications %}
+        <h3 style="margin-top:24px">Specifications</h3>
+        <p>{{ product.specifications }}</p>
+        {% endif %}
+        {% if product.applications %}
+        <h3 style="margin-top:24px">Applications</h3>
+        <p>{{ product.applications }}</p>
+        {% endif %}
+        {% if product.available_sizes %}
+        <h3 style="margin-top:24px">Available Sizes</h3>
+        <p>{{ product.available_sizes }}</p>
+        {% endif %}
+        <div style="margin-top:32px;display:flex;gap:12px">
+          <a href="{{ url_for('main.quote') }}" class="btn btn-primary">Request Quote</a>
+          <a href="{{ url_for('main.products') }}" class="btn btn-outline">Back to Products</a>
+        </div>
+      </div>
+    </div>
+    {% if related %}
+    <h2 class="section-title" style="margin-top:60px">Related Products</h2>
+    <div class="card-grid">
+      {% for p in related %}
+      <div class="card">
+        <div class="card-img">{% if p.images.first() %}<img src="{{ p.images.first().image_url }}" alt="{{ p.name }}">{% else %}<div class="placeholder">{{ p.name }}</div>{% endif %}</div>
+        <div class="card-body">
+          <h3 class="card-title">{{ p.name }}</h3>
+          <a href="{{ url_for('main.product_detail', slug=p.slug) }}" class="btn btn-outline btn-sm">View</a>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+    {% endif %}
+  </div>
+</section>
+{% endblock %}

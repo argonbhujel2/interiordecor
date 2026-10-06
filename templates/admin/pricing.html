@@ -1,0 +1,19 @@
+{% extends "admin/base_admin.html" %}
+{% block title %}Pricing{% endblock %}
+{% block page_title %}Calculator Pricing{% endblock %}
+{% block content %}
+<form method="POST" style="background:white;padding:32px;border-radius:var(--radius);box-shadow:var(--shadow);max-width:600px">
+  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+  <p style="margin-bottom:20px;color:var(--gray)">Prices per sq.ft (in NPR). Used by the ceiling cost calculator.</p>
+  {% for p in pricing %}
+  <div style="margin-bottom:20px;padding-bottom:16px;border-bottom:1px solid var(--light-gray)">
+    <strong>{{ p.material_type }}</strong>
+    <div class="form-row" style="margin-top:8px">
+      <div class="form-group"><label>Material Price</label><input type="number" step="0.01" name="mat_{{ p.id }}" class="form-control" value="{{ p.material_price_per_sqft }}"></div>
+      <div class="form-group"><label>Installation Price</label><input type="number" step="0.01" name="inst_{{ p.id }}" class="form-control" value="{{ p.installation_price_per_sqft }}"></div>
+    </div>
+  </div>
+  {% endfor %}
+  <button type="submit" class="btn btn-primary">Save Pricing</button>
+</form>
+{% endblock %}

@@ -1,0 +1,37 @@
+{% extends "admin/base_admin.html" %}
+{% block title %}Quote #{{ quote.id }}{% endblock %}
+{% block page_title %}Quote Request #{{ quote.id }}{% endblock %}
+{% block content %}
+<div style="background:white;padding:32px;border-radius:var(--radius);box-shadow:var(--shadow);max-width:800px">
+  <p><strong>Name:</strong> {{ quote.customer_name }}</p>
+  <p><strong>Phone:</strong> {{ quote.phone }}</p>
+  <p><strong>Email:</strong> {{ quote.email or '-' }}</p>
+  <p><strong>Address:</strong> {{ quote.address or '-' }}</p>
+  <p><strong>Project Location:</strong> {{ quote.project_location or '-' }}</p>
+  <p><strong>Project Type:</strong> {{ quote.project_type or '-' }}</p>
+  <p><strong>Service:</strong> {{ quote.required_service or '-' }}</p>
+  <p><strong>Ceiling Type:</strong> {{ quote.ceiling_type or '-' }}</p>
+  <p><strong>Dimensions:</strong> {{ quote.room_length or '-' }} x {{ quote.room_width or '-' }} {{ quote.unit }} (Area: {{ quote.estimated_area or '-' }})</p>
+  <p><strong>Material:</strong> {{ quote.material_preference or '-' }}</p>
+  <p><strong>Installation:</strong> {{ 'Yes' if quote.installation_required else 'No' }}</p>
+  <p><strong>Preferred Date:</strong> {{ quote.preferred_date or '-' }}</p>
+  <p><strong>Budget:</strong> {{ quote.budget or '-' }}</p>
+  <p><strong>Message:</strong> {{ quote.message or '-' }}</p>
+  {% if quote.photo_url %}<p><strong>Photo:</strong> <a href="{{ quote.photo_url }}" target="_blank">View</a></p>{% endif %}
+  <p><strong>Submitted:</strong> {{ quote.created_at.strftime('%d %b %Y %H:%M') }}</p>
+  <hr style="margin:24px 0">
+  <form method="POST">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+    <div class="form-group"><label>Status</label>
+      <select name="status" class="form-control">
+        {% for s in ['New','Contacted','Quoted','Approved','Completed','Cancelled'] %}
+        <option value="{{ s }}" {% if quote.status == s %}selected{% endif %}>{{ s }}</option>
+        {% endfor %}
+      </select>
+    </div>
+    <div class="form-group"><label>Internal Notes</label><textarea name="internal_notes" class="form-control">{{ quote.internal_notes or '' }}</textarea></div>
+    <button type="submit" class="btn btn-primary">Update</button>
+    <a href="{{ url_for('admin.quotes') }}" class="btn btn-outline">Back</a>
+  </form>
+</div>
+{% endblock %}

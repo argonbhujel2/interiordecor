@@ -1,0 +1,26 @@
+{% extends "admin/base_admin.html" %}
+{% block title %}Quote Requests{% endblock %}
+{% block page_title %}Quote Requests{% endblock %}
+{% block content %}
+<div class="filter-bar" style="margin-bottom:20px">
+  <a href="{{ url_for('admin.quotes') }}" class="filter-btn {% if not active_status %}active{% endif %}">All</a>
+  {% for s in ['New','Contacted','Quoted','Approved','Completed','Cancelled'] %}
+  <a href="{{ url_for('admin.quotes', status=s) }}" class="filter-btn {% if active_status == s %}active{% endif %}">{{ s }}</a>
+  {% endfor %}
+</div>
+<table class="admin-table">
+  <thead><tr><th>Name</th><th>Phone</th><th>Service</th><th>Status</th><th>Date</th><th></th></tr></thead>
+  <tbody>
+    {% for q in quotes %}
+    <tr>
+      <td>{{ q.customer_name }}</td>
+      <td>{{ q.phone }}</td>
+      <td>{{ q.required_service or '-' }}</td>
+      <td><span class="badge badge-new">{{ q.status }}</span></td>
+      <td>{{ q.created_at.strftime('%d %b %Y') }}</td>
+      <td><a href="{{ url_for('admin.quote_detail', id=q.id) }}" class="btn btn-outline btn-sm">View</a></td>
+    </tr>
+    {% else %}<tr><td colspan="6">No quote requests</td></tr>{% endfor %}
+  </tbody>
+</table>
+{% endblock %}
